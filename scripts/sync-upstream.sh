@@ -18,6 +18,7 @@ clone mattpocock/skills               mattpocock
 clone affaan-m/everything-claude-code ecc
 clone BayramAnnakov/synthetic-market-research synthetic
 clone Gabberflast/academic-pptx-skill          academic
+clone Anjos2/recursive-research                recursive
 
 # Only these 17 of the upstream 50 are kept. Anything not listed here was
 # deliberately deleted -- do not "helpfully" widen this list, or the sync will
@@ -66,7 +67,14 @@ cp "$TMP/academic/SKILL.md" "$TMP/academic/content_guidelines.md" \
    "$TMP/academic/slide_patterns.md" "$TMP/academic/LICENSE" "$ACAD/"
 cp "$TMP"/academic/*.pdf "$ACAD/"
 
-# skills/startup-cso and skills/executive-deck are authored here, not vendored.
+echo "==> recursive-research"
+RR="$REPO_ROOT/skills/recursive-research"
+mkdir -p "$RR"
+cp "$TMP/recursive/plugins/recursive-research/skills/recursive-research/SKILL.md" "$RR/"
+cp "$TMP/recursive/LICENSE" "$RR/"
+
+# skills/startup-cso, executive-deck, consulting-frameworks and
+# amazon-narrative-memo are authored here, not vendored.
 # The sync deliberately leaves them alone.
 
 find "$REPO_ROOT" -name '.DS_Store' -delete 2>/dev/null || true

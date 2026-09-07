@@ -1,7 +1,7 @@
 {
   "name": "chakresh-skills",
-  "version": "0.6.0",
-  "description": "Curated personal skills: focused marketing set (paid ads, ad creative, AI SEO, copywriting, pricing, analytics, planning), market research (desk and synthetic/SSR), competitor profiling, startup strategy, executive and academic deck craft, and plan-stress-testing interviews.",
+  "version": "0.7.0",
+  "description": "Curated personal skills: focused marketing set, market research (desk, synthetic/SSR and recursive), competitor profiling, startup strategy, consulting frameworks, narrative memos, deck craft, and plan-stress-testing interviews.",
   "author": {
     "name": "Chakresh Tibrewal"
   },
@@ -9,14 +9,13 @@
   "keywords": [
     "skills",
     "marketing",
-    "seo",
-    "copywriting",
     "research",
     "competitive-intelligence",
-    "synthetic-research",
     "strategy",
+    "consulting",
+    "frameworks",
+    "memos",
     "presentations",
-    "grilling",
     "productivity"
   ],
   "skills": "./skills"

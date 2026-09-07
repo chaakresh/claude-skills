@@ -3,7 +3,7 @@
 Personal Agent Skills, packaged as a Claude plugin so one repo serves every surface:
 Claude Code, Claude Chat (web/desktop), and Cowork.
 
-**24 skills.** Most are vendored copies of upstream repos; two are authored here — see
+**27 skills.** Most are vendored copies of upstream repos; two are authored here — see
 [Provenance](#provenance) and [Updating](#updating).
 
 ## Curated skills
@@ -13,6 +13,7 @@ Claude Code, Claude Chat (web/desktop), and Cowork.
 | `market-research` | Market sizing, competitor comparisons, investor dossiers, technology scans — with source attribution and decision-oriented summaries. | automatic or `/market-research` |
 | `competitor-profiling` | Turns a list of competitor URLs into structured profile documents, combining live site scraping with SEO data. Needs MCP (see below). | automatic or `/competitor-profiling` |
 | `synthetic-market-research` | LLM-generated synthetic survey panels scored with Semantic Similarity Rating — purchase intent, concept tests, pricing, in minutes at $0/respondent. Needs Python deps + an LLM API key. | automatic or `/synthetic-market-research` |
+| `recursive-research` | Self-regulating recursive research loop to PhD depth, with source tiering, Munger inversion, and disk checkpointing to survive context compaction. **Written in Spanish** (see below). | automatic or `/recursive-research` |
 | `academic-pptx` | Content and structure decisions for conference talks, thesis defenses, seminars, grant briefings. Needs a pptx engine (see below). | automatic or `/academic-pptx` |
 | `grilling` | Relentless round-based interview that maps a plan as a design tree and stress-tests it. | automatic on "grill" phrases |
 | `grill-me` | Thin trigger that hands off to `grilling`. Never auto-invokes. | `/grill-me` only |
@@ -32,6 +33,8 @@ Not vendored — these two live only in this repo, and `scripts/sync-upstream.sh
 | --- | --- |
 | `startup-cso` | Startup strategy review: challenges TAM/CAC/LTV, applies the Good Strategy Kernel, names the moat, forces explicit trade-offs. |
 | `executive-deck` | Board- and investor-grade decks and memos via the Pyramid Principle and SCR, with action titles and one exhibit per slide. |
+| `consulting-frameworks` | MECE issue trees, Good Strategy Kernel, Porter's Five Forces, effort-vs-value 2x2, 3 Horizons — for market entry theses and strategic evaluations. |
+| `amazon-narrative-memo` | Dense-prose strategy memos: tenets, options considered and rejected, unit economics, pre-mortem risk matrix, FAQ appendix. |
 
 ## Marketing skills
 
@@ -58,6 +61,13 @@ pruned.
 
 Run `product-marketing` first — it writes the `.agents/product-marketing.md` context file that
 `competitor-profiling` and others look for before interviewing you from scratch.
+
+## `recursive-research` is in Spanish
+
+Its `SKILL.md` (455 lines) and, importantly, its `description` are written in Spanish. Two
+consequences: it may not auto-trigger on English phrasing like "research this deeply", so invoke
+it as `/recursive-research`; and its output tends to follow the language of the skill unless you
+ask for English. Left as upstream wrote it so the sync stays a clean copy.
 
 ## The missing pptx/docx/xlsx engines
 
@@ -95,7 +105,7 @@ Requires a paid plan. Skills run on all three surfaces; hooks and subagents only
 
 ## Context cost
 
-Every installed skill's name and description is loaded on every request. At 24 skills
+Every installed skill's name and description is loaded on every request. At 27 skills
 that is a real, permanent overhead — if a category here goes unused, deleting its directory
 is the fix.
 
@@ -120,7 +130,8 @@ separately on every surface.
 | `market-research` | [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) | see upstream |
 | `synthetic-market-research` | [BayramAnnakov/synthetic-market-research](https://github.com/BayramAnnakov/synthetic-market-research) | MIT, (c) 2026 Bayram Annakov |
 | `academic-pptx` | [Gabberflast/academic-pptx-skill](https://github.com/Gabberflast/academic-pptx-skill) | MIT, (c) 2026 Gabberflast |
-| `startup-cso`, `executive-deck` | authored in this repo | — |
+| `recursive-research` | [Anjos2/recursive-research](https://github.com/Anjos2/recursive-research) | MIT, (c) 2026 Joseph Huayhualla |
+| `startup-cso`, `executive-deck`, `consulting-frameworks`, `amazon-narrative-memo` | authored in this repo | — |
 
 Note: `academic-pptx`'s own frontmatter carries `license: Proprietary. LICENSE.txt has complete
 terms`, inherited from the Anthropic skill it was modelled on. The repository's actual `LICENSE`
