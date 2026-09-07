@@ -17,6 +17,7 @@ clone coreyhaines31/marketingskills   marketingskills
 clone mattpocock/skills               mattpocock
 clone affaan-m/everything-claude-code ecc
 clone BayramAnnakov/synthetic-market-research synthetic
+clone Gabberflast/academic-pptx-skill          academic
 
 echo "==> marketingskills: 50 skills + tools registry"
 cp -R "$TMP/marketingskills/skills/."  "$REPO_ROOT/skills/"
@@ -39,6 +40,17 @@ cp "$TMP/synthetic/SKILL.md" "$TMP/synthetic/requirements.txt" \
    "$TMP/synthetic/test_run.py" "$TMP/synthetic/LICENSE" "$SMR/"
 rm -rf "$SMR/references" "$SMR/examples"
 cp -R "$TMP/synthetic/references" "$TMP/synthetic/examples" "$SMR/"
+
+# Also a bare skill at its repo root.
+echo "==> academic-pptx"
+ACAD="$REPO_ROOT/skills/academic-pptx"
+mkdir -p "$ACAD"
+cp "$TMP/academic/SKILL.md" "$TMP/academic/content_guidelines.md" \
+   "$TMP/academic/slide_patterns.md" "$TMP/academic/LICENSE" "$ACAD/"
+cp "$TMP"/academic/*.pdf "$ACAD/"
+
+# skills/startup-cso and skills/executive-deck are authored here, not vendored.
+# The sync deliberately leaves them alone.
 
 find "$REPO_ROOT" -name '.DS_Store' -delete 2>/dev/null || true
 

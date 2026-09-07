@@ -8,15 +8,17 @@
     {
       "name": "chakresh-skills",
       "source": "./",
-      "description": "54 skills: Corey Haines' 50 marketing skills, plus market research (desk and synthetic/SSR), competitor profiling, and plan-stress-testing interviews.",
+      "description": "57 skills: Corey Haines' 50 marketing skills, market research (desk and synthetic/SSR), competitor profiling, startup strategy, executive and academic deck craft, and plan-stress-testing interviews.",
       "category": "productivity",
       "keywords": [
         "skills",
         "marketing",
         "seo",
-        "copywriting",
         "research",
         "competitive-intelligence",
+        "synthetic-research",
+        "strategy",
+        "presentations",
         "grilling"
       ]
     }
