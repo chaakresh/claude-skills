@@ -1,22 +1,22 @@
 {
   "name": "chakresh-skills",
-  "version": "0.7.0",
-  "description": "Curated personal skills: focused marketing set, market research (desk, synthetic/SSR and recursive), competitor profiling, startup strategy, consulting frameworks, narrative memos, deck craft, and plan-stress-testing interviews.",
+  "version": "0.8.0",
+  "description": "Curated personal skills: analyst toolkit (root-cause, cohort, funnel, segmentation, A/B, time series, viz), focused marketing set, market research (desk, synthetic/SSR and recursive), competitor profiling, startup strategy, consulting frameworks, narrative memos, and deck craft.",
   "author": {
     "name": "Chakresh Tibrewal"
   },
   "license": "MIT",
   "keywords": [
     "skills",
+    "analytics",
+    "data-analysis",
     "marketing",
     "research",
-    "competitive-intelligence",
     "strategy",
     "consulting",
     "frameworks",
     "memos",
-    "presentations",
-    "productivity"
+    "presentations"
   ],
   "skills": "./skills"
 }

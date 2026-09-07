@@ -19,6 +19,7 @@ clone affaan-m/everything-claude-code ecc
 clone BayramAnnakov/synthetic-market-research synthetic
 clone Gabberflast/academic-pptx-skill          academic
 clone Anjos2/recursive-research                recursive
+clone nimrodfisher/data-analytics-skills       analytics
 
 # Only these 17 of the upstream 50 are kept. Anything not listed here was
 # deliberately deleted -- do not "helpfully" widen this list, or the sync will
@@ -66,6 +67,28 @@ mkdir -p "$ACAD"
 cp "$TMP/academic/SKILL.md" "$TMP/academic/content_guidelines.md" \
    "$TMP/academic/slide_patterns.md" "$TMP/academic/LICENSE" "$ACAD/"
 cp "$TMP"/academic/*.pdf "$ACAD/"
+
+# 13 of that repo's 31 skills. The rest are data-engineering and team-process
+# oriented (quality audits, SQL review, data catalogs, retros) or duplicate the
+# memo/deck skills here. Same rule as MARKETING_KEEP: do not widen casually.
+# Upstream groups skills under numbered category dirs, so each is located by name.
+ANALYTICS_KEEP=(
+  root-cause-investigation funnel-analysis cohort-analysis segmentation-analysis
+  business-metrics-calculator impact-quantification insight-synthesis
+  analysis-planning stakeholder-requirements-gathering ab-test-analysis
+  visualization-builder dashboard-specification time-series-analysis
+)
+
+echo "==> data-analytics-skills: ${#ANALYTICS_KEEP[@]} of 31 skills"
+for s in "${ANALYTICS_KEEP[@]}"; do
+  src="$(find "$TMP/analytics" -type d -name "$s" -not -path '*/.git/*' | head -1)"
+  if [ -n "$src" ]; then
+    rm -rf "$REPO_ROOT/skills/$s"
+    cp -R "$src" "$REPO_ROOT/skills/"
+  else
+    echo "    WARNING: $s no longer exists upstream" >&2
+  fi
+done
 
 echo "==> recursive-research"
 RR="$REPO_ROOT/skills/recursive-research"

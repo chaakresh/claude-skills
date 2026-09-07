@@ -3,7 +3,7 @@
 Personal Agent Skills, packaged as a Claude plugin so one repo serves every surface:
 Claude Code, Claude Chat (web/desktop), and Cowork.
 
-**27 skills.** Most are vendored copies of upstream repos; two are authored here — see
+**40 skills.** Most are vendored copies of upstream repos; two are authored here — see
 [Provenance](#provenance) and [Updating](#updating).
 
 ## Curated skills
@@ -35,6 +35,41 @@ Not vendored — these two live only in this repo, and `scripts/sync-upstream.sh
 | `executive-deck` | Board- and investor-grade decks and memos via the Pyramid Principle and SCR, with action titles and one exhibit per slide. |
 | `consulting-frameworks` | MECE issue trees, Good Strategy Kernel, Porter's Five Forces, effort-vs-value 2x2, 3 Horizons — for market entry theses and strategic evaluations. |
 | `amazon-narrative-memo` | Dense-prose strategy memos: tenets, options considered and rejected, unit economics, pre-mortem risk matrix, FAQ appendix. |
+
+## Analytics skills
+
+13 skills from [nimrodfisher/data-analytics-skills](https://github.com/nimrodfisher/data-analytics-skills),
+kept from that repo's 31:
+
+| Skill | Role |
+| --- | --- |
+| `root-cause-investigation` | A metric moved — systematic investigation of why |
+| `funnel-analysis` | Multi-step conversion drop-off diagnosis |
+| `cohort-analysis` | Retention and behaviour over time |
+| `segmentation-analysis` | Who the distinct groups actually are |
+| `business-metrics-calculator` | MRR, churn, LTV, CAC with industry benchmarks |
+| `ab-test-analysis` | Significance, sample ratio mismatch, experiment readout |
+| `time-series-analysis` | Trend, seasonality, anomaly, forecast |
+| `impact-quantification` | Sizing the opportunity and ROI of a recommendation |
+| `insight-synthesis` | Findings into "so what" |
+| `analysis-planning` | Structure the question before doing the work |
+| `stakeholder-requirements-gathering` | Turning a vague ask into a scoped one |
+| `visualization-builder` | Chart-type choice and publication-ready visuals |
+| `dashboard-specification` | Dashboard requirements and design specs |
+
+**A deliberate subset.** The 18 skipped skills are data-engineering oriented (`data-quality-audit`,
+`query-validation`, `programmatic-eda`, `semantic-model-builder`, `sql-to-business-logic`, data
+cataloguing), team-process artefacts (`analysis-retrospective`, `peer-review-template`,
+`analysis-qa-checklist`, `context-packager`), or duplicate ground already covered here by
+`executive-deck` and `amazon-narrative-memo` (`executive-summary-generator`,
+`data-narrative-builder`, `methodology-explainer`, `technical-to-business-translator`).
+`ANALYTICS_KEEP` in `scripts/sync-upstream.sh` holds the list.
+
+These skills write and run analysis code, so they assume **pandas, numpy, matplotlib and
+seaborn** are available in whatever environment you point them at.
+
+Note `ab-test-analysis` (statistics of a finished experiment) and `ab-testing` from the
+marketing set (designing the experiment) are complements, not duplicates.
 
 ## Marketing skills
 
@@ -105,7 +140,7 @@ Requires a paid plan. Skills run on all three surfaces; hooks and subagents only
 
 ## Context cost
 
-Every installed skill's name and description is loaded on every request. At 27 skills
+Every installed skill's name and description is loaded on every request. At 40 skills
 that is a real, permanent overhead — if a category here goes unused, deleting its directory
 is the fix.
 
@@ -131,9 +166,18 @@ separately on every surface.
 | `synthetic-market-research` | [BayramAnnakov/synthetic-market-research](https://github.com/BayramAnnakov/synthetic-market-research) | MIT, (c) 2026 Bayram Annakov |
 | `academic-pptx` | [Gabberflast/academic-pptx-skill](https://github.com/Gabberflast/academic-pptx-skill) | MIT, (c) 2026 Gabberflast |
 | `recursive-research` | [Anjos2/recursive-research](https://github.com/Anjos2/recursive-research) | MIT, (c) 2026 Joseph Huayhualla |
+| 13 analytics skills | [nimrodfisher/data-analytics-skills](https://github.com/nimrodfisher/data-analytics-skills) | **no LICENSE file** — see below |
 | `startup-cso`, `executive-deck`, `consulting-frameworks`, `amazon-narrative-memo` | authored in this repo | — |
 
 Note: `academic-pptx`'s own frontmatter carries `license: Proprietary. LICENSE.txt has complete
 terms`, inherited from the Anthropic skill it was modelled on. The repository's actual `LICENSE`
 is MIT, which is what governs; the frontmatter line is left byte-identical to upstream so the
 sync stays a clean copy.
+
+### One licensing caveat
+
+`nimrodfisher/data-analytics-skills` ships no LICENSE file, so no redistribution rights are
+granted. Vendoring it here is fine while **this repository stays private** — the author
+publishes the skills to be cloned and used. Making this repo public would be redistribution
+without a licence. If that ever becomes the plan, drop those 13 directories first (or ask the
+author to add a licence).

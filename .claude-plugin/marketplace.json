@@ -8,18 +8,17 @@
     {
       "name": "chakresh-skills",
       "source": "./",
-      "description": "27 skills: focused marketing set, market research (desk, synthetic/SSR and recursive), competitor profiling, startup strategy, consulting frameworks, narrative memos, and deck craft.",
+      "description": "40 skills: analyst toolkit, focused marketing set, market research (desk, synthetic and recursive), competitor profiling, startup strategy, consulting frameworks, narrative memos, and deck craft.",
       "category": "productivity",
       "keywords": [
         "skills",
+        "analytics",
+        "data-analysis",
         "marketing",
-        "seo",
         "research",
-        "competitive-intelligence",
-        "synthetic-research",
         "strategy",
-        "presentations",
-        "grilling"
+        "consulting",
+        "memos"
       ]
     }
   ]
