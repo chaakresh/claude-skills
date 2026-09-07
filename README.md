@@ -3,7 +3,7 @@
 Personal Agent Skills, packaged as a Claude plugin so one repo serves every surface:
 Claude Code, Claude Chat (web/desktop), and Cowork.
 
-**57 skills.** Most are vendored copies of upstream repos; two are authored here — see
+**24 skills.** Most are vendored copies of upstream repos; two are authored here — see
 [Provenance](#provenance) and [Updating](#updating).
 
 ## Curated skills
@@ -35,54 +35,29 @@ Not vendored — these two live only in this repo, and `scripts/sync-upstream.sh
 
 ## Marketing skills
 
-49 skills from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills),
-covering CRO, copywriting, SEO, paid ads, lifecycle, and growth:
+16 skills from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills),
+kept from that repo's 50:
 
 | `ab-testing` | `ad-creative` | `ads` |
-| `ai-seo` | `analytics` | `aso` |
-| `attribution` | `churn-prevention` | `co-marketing` |
-| `cold-email` | `community-marketing` | `competitors` |
-| `content-strategy` | `copy-editing` | `copywriting` |
-| `cro` | `customer-research` | `directory-submissions` |
-| `emails` | `events` | `free-tools` |
-| `image` | `influencer-marketing` | `launch` |
-| `lead-magnets` | `marketing-council` | `marketing-ideas` |
-| `marketing-loops` | `marketing-plan` | `marketing-psychology` |
-| `offers` | `onboarding` | `paywalls` |
-| `popups` | `pricing` | `product-marketing` |
-| `programmatic-seo` | `prospecting` | `public-relations` |
-| `referrals` | `revops` | `sales-enablement` |
-| `schema` | `seo-audit` | `signup` |
-| `site-architecture` | `sms` | `social` |
-| `video` |  |  |
+| `ai-seo` | `analytics` | `cold-email` |
+| `competitors` | `copywriting` | `marketing-council` |
+| `marketing-ideas` | `marketing-loops` | `marketing-plan` |
+| `marketing-psychology` | `pricing` | `product-marketing` |
+| `sales-enablement` |  |  |
 
-Several of these link to a shared tool registry at `tools/` (integration notes for Google Ads,
+**This is a deliberate subset.** The other 33 upstream skills (`seo-audit`, `social`, `emails`,
+`onboarding`, `cro`, `offers`, `prospecting`, …) were deleted to hold down always-on context
+cost — every installed skill's description loads on every request. `scripts/sync-upstream.sh`
+carries the keep-list, so a re-sync will not bring them back. To restore one, add its name to
+`MARKETING_KEEP` in that script and re-run it.
+
+Several kept skills link to a shared tool registry at `tools/` (integration notes for Google Ads,
 GA4, Segment and ~160 other files). That directory is vendored too, so those `../../tools/...`
-links resolve.
+links resolve. One link now dangles by design: `ads` points at `customer-research`, which was
+pruned.
 
-## Prerequisites worth knowing
-
-`competitor-profiling` drives two MCP servers and degrades badly without them:
-
-- **Firecrawl** — live competitor site scraping
-- **DataForSEO** — traffic, keyword, and backlink data
-
-`synthetic-market-research` needs a Python environment and an LLM API key (Anthropic, OpenAI or
-Google — it uses whichever is in the environment):
-
-```
-pip install -r skills/synthetic-market-research/requirements.txt
-```
-
-It pulls PyMC Labs' `semantic-similarity-rating` straight from git, plus numpy and polars.
-Read `references/SSR_METHODOLOGY.md` in that skill before trusting output: the method reports
-~90% correlation with real humans across 57 surveys, which is a validated approximation, not
-a substitute for talking to customers.
-
-`competitor-profiling` also looks for a `.agents/product-marketing.md` (or `.claude/product-marketing.md`) context
-file in the working directory and, finding none, will interview you for the same information.
-Output lands in `competitor-profiles/` relative to wherever it runs. Many of the marketing
-skills expect similar API access for the platform they cover.
+Run `product-marketing` first — it writes the `.agents/product-marketing.md` context file that
+`competitor-profiling` and others look for before interviewing you from scratch.
 
 ## The missing pptx/docx/xlsx engines
 
@@ -120,7 +95,7 @@ Requires a paid plan. Skills run on all three surfaces; hooks and subagents only
 
 ## Context cost
 
-Every installed skill's name and description is loaded on every request. At 57 skills
+Every installed skill's name and description is loaded on every request. At 24 skills
 that is a real, permanent overhead — if a category here goes unused, deleting its directory
 is the fix.
 
@@ -140,7 +115,7 @@ separately on every surface.
 
 | Skills | Source | License |
 | --- | --- | --- |
-| 49 marketing skills, `competitor-profiling`, `tools/` | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | MIT, (c) 2025 Corey Haines |
+| 16 marketing skills, `competitor-profiling`, `tools/` | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | MIT, (c) 2025 Corey Haines |
 | `grilling`, `grill-me` | [mattpocock/skills](https://github.com/mattpocock/skills) | MIT |
 | `market-research` | [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) | see upstream |
 | `synthetic-market-research` | [BayramAnnakov/synthetic-market-research](https://github.com/BayramAnnakov/synthetic-market-research) | MIT, (c) 2026 Bayram Annakov |

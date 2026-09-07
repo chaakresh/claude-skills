@@ -19,8 +19,25 @@ clone affaan-m/everything-claude-code ecc
 clone BayramAnnakov/synthetic-market-research synthetic
 clone Gabberflast/academic-pptx-skill          academic
 
-echo "==> marketingskills: 50 skills + tools registry"
-cp -R "$TMP/marketingskills/skills/."  "$REPO_ROOT/skills/"
+# Only these 17 of the upstream 50 are kept. Anything not listed here was
+# deliberately deleted -- do not "helpfully" widen this list, or the sync will
+# resurrect skills that were pruned to hold down always-on context cost.
+MARKETING_KEEP=(
+  ab-testing ad-creative ads ai-seo analytics cold-email
+  competitor-profiling competitors copywriting marketing-council
+  marketing-ideas marketing-loops marketing-plan marketing-psychology
+  pricing product-marketing sales-enablement
+)
+
+echo "==> marketingskills: ${#MARKETING_KEEP[@]} of 50 skills + tools registry"
+for s in "${MARKETING_KEEP[@]}"; do
+  if [ -d "$TMP/marketingskills/skills/$s" ]; then
+    rm -rf "$REPO_ROOT/skills/$s"
+    cp -R "$TMP/marketingskills/skills/$s" "$REPO_ROOT/skills/"
+  else
+    echo "    WARNING: $s no longer exists upstream" >&2
+  fi
+done
 rm -rf "$REPO_ROOT/tools"
 cp -R "$TMP/marketingskills/tools"     "$REPO_ROOT/tools"
 cp    "$TMP/marketingskills/partners.json" "$REPO_ROOT/partners.json"
