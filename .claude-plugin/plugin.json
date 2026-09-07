@@ -1,23 +1,20 @@
 {
   "name": "chakresh-skills",
-  "version": "0.2.0",
-  "description": "Curated personal skills: market research with source attribution, competitor profiling, and relentless plan-stress-testing interviews.",
+  "version": "0.3.0",
+  "description": "Curated personal skills: 50 marketing skills (CRO, copywriting, SEO, paid ads, growth), market research with source attribution, competitor profiling, and plan-stress-testing interviews.",
   "author": {
     "name": "Chakresh Tibrewal"
   },
   "license": "MIT",
   "keywords": [
     "skills",
+    "marketing",
+    "seo",
+    "copywriting",
     "research",
     "competitive-intelligence",
     "grilling",
-    "planning",
     "productivity"
   ],
-  "skills": [
-    "./skills/market-research",
-    "./skills/competitor-profiling",
-    "./skills/grilling",
-    "./skills/grill-me"
-  ]
+  "skills": "./skills"
 }

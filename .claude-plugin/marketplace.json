@@ -8,14 +8,16 @@
     {
       "name": "chakresh-skills",
       "source": "./",
-      "description": "Curated personal skills: market research, competitor profiling, and plan-stress-testing interviews (grilling / grill-me).",
+      "description": "53 skills: Corey Haines' 50 marketing skills, plus market research, competitor profiling, and plan-stress-testing interviews.",
       "category": "productivity",
       "keywords": [
         "skills",
+        "marketing",
+        "seo",
+        "copywriting",
         "research",
         "competitive-intelligence",
-        "grilling",
-        "planning"
+        "grilling"
       ]
     }
   ]
