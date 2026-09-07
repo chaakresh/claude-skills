@@ -1,0 +1,15 @@
+{
+  "name": "chakresh-skills",
+  "version": "0.1.0",
+  "description": "Curated personal skills: market research with source attribution, and relentless plan-stress-testing interviews.",
+  "author": {
+    "name": "Chakresh Tibrewal"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "research", "grilling", "planning", "productivity"],
+  "skills": [
+    "./skills/market-research",
+    "./skills/grilling",
+    "./skills/grill-me"
+  ]
+}

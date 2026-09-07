@@ -1,0 +1,16 @@
+{
+  "name": "chakresh",
+  "owner": {
+    "name": "Chakresh Tibrewal"
+  },
+  "description": "Personal skill collection, curated from upstream skill repos and synced to Claude Code, Chat, and Cowork.",
+  "plugins": [
+    {
+      "name": "chakresh-skills",
+      "source": "./",
+      "description": "Curated personal skills: market research, and plan-stress-testing interviews (grilling / grill-me).",
+      "category": "productivity",
+      "keywords": ["skills", "research", "grilling", "planning"]
+    }
+  ]
+}
