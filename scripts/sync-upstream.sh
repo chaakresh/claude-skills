@@ -16,6 +16,7 @@ echo "==> cloning upstreams"
 clone coreyhaines31/marketingskills   marketingskills
 clone mattpocock/skills               mattpocock
 clone affaan-m/everything-claude-code ecc
+clone BayramAnnakov/synthetic-market-research synthetic
 
 echo "==> marketingskills: 50 skills + tools registry"
 cp -R "$TMP/marketingskills/skills/."  "$REPO_ROOT/skills/"
@@ -29,6 +30,15 @@ cp -R "$TMP/mattpocock/skills/productivity/grill-me"  "$REPO_ROOT/skills/"
 
 echo "==> ECC: market-research"
 cp -R "$TMP/ecc/skills/market-research" "$REPO_ROOT/skills/"
+
+# This upstream is a bare skill at its repo root, not a skills/ collection.
+echo "==> synthetic-market-research"
+SMR="$REPO_ROOT/skills/synthetic-market-research"
+mkdir -p "$SMR"
+cp "$TMP/synthetic/SKILL.md" "$TMP/synthetic/requirements.txt" \
+   "$TMP/synthetic/test_run.py" "$TMP/synthetic/LICENSE" "$SMR/"
+rm -rf "$SMR/references" "$SMR/examples"
+cp -R "$TMP/synthetic/references" "$TMP/synthetic/examples" "$SMR/"
 
 find "$REPO_ROOT" -name '.DS_Store' -delete 2>/dev/null || true
 

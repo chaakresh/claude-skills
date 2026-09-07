@@ -1,6 +1,6 @@
 {
   "name": "chakresh-skills",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Curated personal skills: 50 marketing skills (CRO, copywriting, SEO, paid ads, growth), market research with source attribution, competitor profiling, and plan-stress-testing interviews.",
   "author": {
     "name": "Chakresh Tibrewal"
@@ -13,6 +13,7 @@
     "copywriting",
     "research",
     "competitive-intelligence",
+    "synthetic-research",
     "grilling",
     "productivity"
   ],
