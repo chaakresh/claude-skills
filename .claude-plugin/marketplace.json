@@ -8,9 +8,15 @@
     {
       "name": "chakresh-skills",
       "source": "./",
-      "description": "Curated personal skills: market research, and plan-stress-testing interviews (grilling / grill-me).",
+      "description": "Curated personal skills: market research, competitor profiling, and plan-stress-testing interviews (grilling / grill-me).",
       "category": "productivity",
-      "keywords": ["skills", "research", "grilling", "planning"]
+      "keywords": [
+        "skills",
+        "research",
+        "competitive-intelligence",
+        "grilling",
+        "planning"
+      ]
     }
   ]
 }
