@@ -90,11 +90,23 @@ for s in "${ANALYTICS_KEEP[@]}"; do
   fi
 done
 
-echo "==> recursive-research"
+# recursive-research is a LOCAL FORK: skills/recursive-research/SKILL.md is an
+# English translation of upstream's Spanish original. Re-copying it would throw
+# that away, so the sync only refreshes LICENSE and reports version drift.
 RR="$REPO_ROOT/skills/recursive-research"
-mkdir -p "$RR"
-cp "$TMP/recursive/plugins/recursive-research/skills/recursive-research/SKILL.md" "$RR/"
+UPSTREAM_SKILL="$TMP/recursive/plugins/recursive-research/skills/recursive-research/SKILL.md"
+up_ver="$(sed -n 's/^version: *//p' "$UPSTREAM_SKILL" | head -1)"
+local_ver="$(sed -n 's/^version: *//p' "$RR/SKILL.md" | head -1)"
 cp "$TMP/recursive/LICENSE" "$RR/"
+if [ "$up_ver" = "$local_ver" ]; then
+  echo "==> recursive-research: translation kept (upstream still v$up_ver)"
+else
+  echo "==> recursive-research: translation kept, but UPSTREAM MOVED v$local_ver -> v$up_ver" >&2
+  echo "    Re-translate deliberately; diff against:" >&2
+  echo "    $UPSTREAM_SKILL" >&2
+  cp "$UPSTREAM_SKILL" "$REPO_ROOT/skills/recursive-research/SKILL.upstream.es.md"
+  echo "    Upstream copy saved as skills/recursive-research/SKILL.upstream.es.md" >&2
+fi
 
 # skills/startup-cso, executive-deck, consulting-frameworks and
 # amazon-narrative-memo are authored here, not vendored.

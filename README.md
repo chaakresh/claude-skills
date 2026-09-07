@@ -13,7 +13,7 @@ Claude Code, Claude Chat (web/desktop), and Cowork.
 | `market-research` | Market sizing, competitor comparisons, investor dossiers, technology scans — with source attribution and decision-oriented summaries. | automatic or `/market-research` |
 | `competitor-profiling` | Turns a list of competitor URLs into structured profile documents, combining live site scraping with SEO data. Needs MCP (see below). | automatic or `/competitor-profiling` |
 | `synthetic-market-research` | LLM-generated synthetic survey panels scored with Semantic Similarity Rating — purchase intent, concept tests, pricing, in minutes at $0/respondent. Needs Python deps + an LLM API key. | automatic or `/synthetic-market-research` |
-| `recursive-research` | Self-regulating recursive research loop to PhD depth, with source tiering, Munger inversion, and disk checkpointing to survive context compaction. **Written in Spanish** (see below). | automatic or `/recursive-research` |
+| `recursive-research` | Self-regulating recursive research loop to PhD depth, with source tiering, Munger inversion, and disk checkpointing to survive context compaction. Translated to English here (see below). | automatic or `/recursive-research` |
 | `academic-pptx` | Content and structure decisions for conference talks, thesis defenses, seminars, grant briefings. Needs a pptx engine (see below). | automatic or `/academic-pptx` |
 | `grilling` | Relentless round-based interview that maps a plan as a design tree and stress-tests it. | automatic on "grill" phrases |
 | `grill-me` | Thin trigger that hands off to `grilling`. Never auto-invokes. | `/grill-me` only |
@@ -97,12 +97,22 @@ pruned.
 Run `product-marketing` first — it writes the `.agents/product-marketing.md` context file that
 `competitor-profiling` and others look for before interviewing you from scratch.
 
-## `recursive-research` is in Spanish
+## `recursive-research` is a local fork
 
-Its `SKILL.md` (455 lines) and, importantly, its `description` are written in Spanish. Two
-consequences: it may not auto-trigger on English phrasing like "research this deeply", so invoke
-it as `/recursive-research`; and its output tends to follow the language of the skill unless you
-ask for English. Left as upstream wrote it so the sync stays a clean copy.
+Upstream is written in Spanish — both the body and, more consequentially, the `description`
+that decides when the skill fires. It is translated to English here, so it auto-triggers on
+English phrasing like "research this deeply".
+
+Structure, thresholds, WDM weights, source tiering and the five PhD stopping criteria are
+unchanged. The filenames the skill *generates* were translated too
+(`memoria/investigaciones/` -> `memory/research/`, `estado.md` -> `state.md`, and so on), so
+research folders from this copy are not interchangeable with upstream's. MIT permits the
+derivative; the copyright notice stays in `LICENSE` and in the skill.
+
+`scripts/sync-upstream.sh` therefore does **not** re-copy this skill — that would silently
+revert the translation. It refreshes `LICENSE`, compares the upstream `version:` against the
+local one, and if upstream has moved it warns loudly and drops the new Spanish original at
+`skills/recursive-research/SKILL.upstream.es.md` for you to diff and re-translate deliberately.
 
 ## The missing pptx/docx/xlsx engines
 

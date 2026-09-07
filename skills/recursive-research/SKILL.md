@@ -4,452 +4,465 @@ version: 2.2.0
 author: Joseph Huayhualla (@Anjos2)
 license: MIT
 repository: https://github.com/Anjos2/recursive-research
-description: Investigación recursiva profunda con loop auto-regulado hasta nivel PhD. Aplicable a cualquier dominio (ciencia, tecnología, negocio, arte, humanidades). Usa WDM + Inversión Munger para decisiones autónomas, tiering de fuentes confiables, y checkpointing a disco para sobrevivir límites de contexto.
+description: Deep recursive research with a self-regulating loop that iterates to PhD level. Works in any domain (science, technology, business, art, humanities). Uses a Weighted Decision Matrix plus Munger inversion for autonomous decisions, tiering of trustworthy sources, and checkpointing to disk to survive context limits. Use when the user wants to go deep on a topic, understand a new field before deciding, prepare a technical paper or proposal, or map state of the art and knowledge gaps.
 ---
 
-# Skill: Investigación Recursiva Profunda (v2.0)
+# Skill: Deep Recursive Research (v2.0)
 
-Investigación auto-regulada que itera hasta alcanzar **nivel PhD** sobre una semilla de investigación (tema raíz). Funciona en cualquier dominio: ciencias formales, naturales, sociales, humanidades, artes, tecnología, negocio.
+Self-regulating research that iterates until it reaches **PhD level** on a research seed (root topic). Works in any domain: formal, natural and social sciences, humanities, the arts, technology, business.
 
-## Cuándo usar
+## When to use
 
-- Quieres profundizar en un tema hasta el nivel de un experto
-- Necesitas entender un campo nuevo para tomar decisiones informadas
-- Preparas un documento técnico, paper, propuesta o estudio
-- Quieres identificar estado del arte + gaps de conocimiento
+- You want to go deep on a topic until you reach expert level
+- You need to understand a new field in order to make informed decisions
+- You are preparing a technical document, paper, proposal or study
+- You want to identify the state of the art plus knowledge gaps
 
-## Principios
+## Principles
 
-1. **Pregunta antes de investigar** — la skill interroga al usuario sobre semilla, modo y fuentes ANTES de arrancar
-2. **Fuentes confiables con tiering transparente** — rechaza automáticamente fuentes no fiables
-3. **WDM + Inversión Munger** en toda decisión autónoma no trivial
-4. **Loop con auto-regulación** — no iteraciones fijas; criterio medible para cerrar
-5. **Checkpointing defensivo** — guarda a disco cada ciclo; sobrevive compact / cierre de sesión
-6. **Pausa preventiva** — detecta proximidad al límite de contexto y sugiere pausar antes del cierre forzoso
+1. **Ask before researching** — the skill interrogates the user about seed, mode and sources BEFORE starting
+2. **Trustworthy sources with transparent tiering** — automatically rejects unreliable sources
+3. **WDM + Munger inversion** on every non-trivial autonomous decision
+4. **Self-regulating loop** — no fixed iteration count; a measurable criterion decides when to stop
+5. **Defensive checkpointing** — write to disk every cycle; survives compaction and session close
+6. **Preventive pause** — detects proximity to the context limit and suggests pausing before a forced cutoff
 
----
-
-## Flujo completo
-
-### Fase 0 — Preguntas iniciales (la skill interroga)
-
-Al invocar `/recursive-research`, la skill pregunta al usuario, en orden:
-
-1. **Semilla de investigación**: "¿Cuál es el tema que quieres investigar?" (texto libre)
-2. **Modo**: `web` / `local` / `mixto`
-3. **Si incluye local**: "¿Qué rutas locales debo investigar?" (lista de paths separados por comas)
-4. **Fuentes priorizadas** (opcional): autores, dominios, publicaciones preferidas
-5. **Fuentes excluidas** (opcional)
-6. **Tope duro de ciclos** (default: 20; configurable)
-
-La skill presenta un resumen y espera confirmación antes de arrancar.
+Throughout this skill, **WDM** means Weighted Decision Matrix: score each candidate against weighted criteria and take the top scorers. **Munger inversion** means asking what you are missing or getting wrong, rather than confirming what you already have.
 
 ---
 
-### Fase 1 — Preparación del espacio de trabajo
+## Full flow
 
-1. Generar `slug` de la semilla (kebab-case, máx. 40 caracteres)
-2. Verificar / crear `memoria/investigaciones/<slug>/` en el directorio de trabajo actual
-   - **Si `memoria/` NO existe, crearla** explicando: *"No existe la carpeta `memoria/` en el proyecto. La creo porque la skill necesita consolidar hallazgos en disco cada ciclo — es lo que permite reanudar la investigación en sesiones nuevas."*
-3. Crear archivos iniciales:
-   - `estado.md` — metadatos, progreso, métricas
-   - `hilos.md` — árbol de hilos semilla + sub-hilos
-   - `fuentes-tier-1.md`, `fuentes-tier-2.md`, `fuentes-tier-3.md`, `fuentes-rechazadas.md`
-   - `hallazgos.md` — consolidación
+### Phase 0 — Opening questions (the skill interrogates)
+
+When `/recursive-research` is invoked, the skill asks the user, in order:
+
+1. **Research seed**: "What is the topic you want to research?" (free text)
+2. **Mode**: `web` / `local` / `mixed`
+3. **If local is included**: "Which local paths should I research?" (comma-separated list of paths)
+4. **Prioritised sources** (optional): preferred authors, domains, publications
+5. **Excluded sources** (optional)
+6. **Hard cycle cap** (default: 20; configurable)
+
+The skill presents a summary and waits for confirmation before starting.
 
 ---
 
-### Fase 2 — Identificar hilos semilla
+### Phase 1 — Prepare the workspace
 
-Generar **3-5 hilos semilla** (ángulos distintos del tema).
+1. Generate a `slug` from the seed (kebab-case, max 40 characters)
+2. Verify / create `memory/research/<slug>/` in the current working directory
+   - **If `memory/` does NOT exist, create it** and explain: *"There is no `memory/` folder in this project. I am creating it because the skill needs to consolidate findings to disk every cycle — that is what allows the research to resume in a new session."*
+3. Create the initial files:
+   - `state.md` — metadata, progress, metrics
+   - `threads.md` — tree of seed threads and sub-threads
+   - `sources-tier-1.md`, `sources-tier-2.md`, `sources-tier-3.md`, `sources-rejected.md`
+   - `findings.md` — consolidation
 
-**Aplicar WDM a la selección de hilos**:
+---
 
-| Criterio | Peso | Qué evalúa |
+### Phase 2 — Identify seed threads
+
+Generate **3-5 seed threads** (distinct angles on the topic).
+
+**Apply WDM to thread selection**:
+
+| Criterion | Weight | What it evaluates |
 |---|---|---|
-| Cobertura conceptual | 4 | ¿Cubre una dimensión distinta del tema? |
-| Diversidad de perspectivas | 3 | ¿Trae voces / escuelas distintas? |
-| Accesibilidad de fuentes | 3 | ¿Existen fuentes Tier 1/2 para este hilo? |
-| Relevancia al usuario | 4 | ¿Alinea con el objetivo que motivó la investigación? |
+| Conceptual coverage | 4 | Does it cover a distinct dimension of the topic? |
+| Diversity of perspective | 3 | Does it bring different voices / schools of thought? |
+| Source accessibility | 3 | Do Tier 1/2 sources exist for this thread? |
+| Relevance to the user | 4 | Does it align with the goal that motivated the research? |
 
-Evaluar 5-8 hilos candidatos, seleccionar top 3-5.
+Evaluate 5-8 candidate threads, select the top 3-5.
 
-**Inversión Munger sobre los hilos elegidos**:
-- ¿Qué hilo importante estoy ignorando?
-- ¿Qué perspectiva ausente haría que mi investigación sea parcial?
-- ¿Qué escuela / voz disidente no aparece?
+**Munger inversion on the chosen threads**:
+- Which important thread am I ignoring?
+- Which absent perspective would make my research one-sided?
+- Which school of thought or dissenting voice is missing?
 
-Si la inversión revela un hilo crítico faltante, agregarlo y re-ejecutar WDM.
+If the inversion reveals a critical missing thread, add it and re-run the WDM.
 
-**Ejemplos por dominio** (NO solo código):
+**Examples by domain** (NOT only code):
 
-| Dominio | Semilla | Hilos típicos |
-|---------|---------|---------------|
-| Ciencia | Inmunoterapia contra cáncer | Mecanismos moleculares / Ensayos clínicos / Historia y evolución / Controversias y limitaciones / Estado comercial |
-| Arte | Minimalismo en música del siglo XX | Compositores clave / Técnicas / Contexto histórico-cultural / Crítica y recepción / Obras emblemáticas |
-| Negocio | Modelos de monetización SaaS B2B | Pricing strategies / Métricas financieras / Casos documentados / Marco legal / Psicología de compra B2B |
-| Humanidades | Filosofía estoica aplicada moderna | Fuentes primarias (Epicteto, Séneca, Aurelio) / Interpretaciones contemporáneas / Aplicaciones prácticas / Críticas filosóficas / Evidencia empírica psicológica |
-| Tecnología | Arquitectura hexagonal en microservicios | Fundamentos teóricos / Implementaciones por lenguaje / Casos reales / Trade-offs y críticas / Herramientas |
-
----
-
-### Fase 3 — Detectar herramientas disponibles
-
-Antes del primer ciclo, detectar MCPs disponibles y ordenar por preferencia:
-
-**Preferencia (mayor a menor velocidad/efectividad)**:
-
-1. **MCPs de scraping optimizados para IA**: Firecrawl (`firecrawl_scrape`, `firecrawl_crawl`, `firecrawl_search`, `firecrawl_extract`) — texto estructurado, rápido
-2. **MCPs de documentación oficial**: Context7 (`query-docs`) — cuando la fuente es una librería/framework
-3. **Herramientas nativas**: `WebSearch`, `WebFetch` — fallback universal
-4. **MCPs de navegación real (Chrome DevTools)**: DESPRIORIZADOS — solo si el contenido requiere ejecución JS explícita (SPAs sin SSR, contenido tras auth)
-
-Razón: scrapers de IA son 10-50× más rápidos que navegadores reales y dan texto ya estructurado.
+| Domain | Seed | Typical threads |
+|--------|------|-----------------|
+| Science | Cancer immunotherapy | Molecular mechanisms / Clinical trials / History and evolution / Controversies and limitations / Commercial status |
+| Art | Minimalism in 20th-century music | Key composers / Techniques / Historical and cultural context / Criticism and reception / Landmark works |
+| Business | B2B SaaS monetisation models | Pricing strategies / Financial metrics / Documented cases / Legal framework / B2B buying psychology |
+| Humanities | Modern applied Stoic philosophy | Primary sources (Epictetus, Seneca, Aurelius) / Contemporary interpretations / Practical applications / Philosophical critiques / Empirical psychological evidence |
+| Technology | Hexagonal architecture in microservices | Theoretical foundations / Implementations per language / Real-world cases / Trade-offs and critiques / Tooling |
 
 ---
 
-### Fase 4 — Fuentes semilla sugeridas
+### Phase 3 — Detect available tools
 
-La skill presenta al usuario una lista de fuentes semilla **pre-cargadas por dominio** para que **confirme, añada o rechace**:
+Before the first cycle, detect available MCPs and order them by preference:
 
-**Ciencia general / papers**:
-- arXiv (https://arxiv.org) — preprints en física, matemáticas, CS, biología, economía
-- Semantic Scholar (https://www.semanticscholar.org) — red de citaciones
+**Preference (fastest and most effective first)**:
+
+1. **AI-optimised scraping MCPs**: Firecrawl (`firecrawl_scrape`, `firecrawl_crawl`, `firecrawl_search`, `firecrawl_extract`) — structured text, fast
+2. **Official documentation MCPs**: Context7 (`query-docs`) — when the source is a library or framework
+3. **Native tools**: `WebSearch`, `WebFetch` — universal fallback
+4. **Real-browser MCPs (Chrome DevTools)**: DEPRIORITISED — only when the content genuinely requires JS execution (SPAs without SSR, content behind auth)
+
+Reason: AI scrapers are 10-50x faster than real browsers and return text that is already structured.
+
+---
+
+### Phase 4 — Suggested seed sources
+
+The skill presents the user with a list of seed sources **pre-loaded by domain**, to **confirm, extend or reject**:
+
+**General science / papers**:
+- arXiv (https://arxiv.org) — preprints in physics, mathematics, CS, biology, economics
+- Semantic Scholar (https://www.semanticscholar.org) — citation network
 - Google Scholar (https://scholar.google.com)
-- Connected Papers (https://www.connectedpapers.com) — mapas visuales de citaciones
-- OpenReview (https://openreview.net) — revisiones abiertas en ML
+- Connected Papers (https://www.connectedpapers.com) — visual citation maps
+- OpenReview (https://openreview.net) — open peer review in ML
 
-**Medicina / biología**:
+**Medicine / biology**:
 - PubMed (https://pubmed.ncbi.nlm.nih.gov)
-- Cochrane Library (https://www.cochranelibrary.com) — meta-análisis
+- Cochrane Library (https://www.cochranelibrary.com) — meta-analyses
 - WHO (https://www.who.int)
 - ClinicalTrials.gov
 
-**Humanidades / ciencias sociales**:
+**Humanities / social sciences**:
 - JSTOR (https://www.jstor.org)
 - SSRN (https://www.ssrn.com)
 - Project MUSE (https://muse.jhu.edu)
 
-**Código / tecnología**:
-- GitHub (búsqueda, topics, starred lists de expertos)
-- Context7 para docs oficiales (si MCP disponible)
+**Code / technology**:
+- GitHub (search, topics, experts' starred lists)
+- Context7 for official docs (if the MCP is available)
 - RFCs (https://www.rfc-editor.org)
 - W3C specs (https://www.w3.org/TR/)
 
-**Datos / estadística**:
-- Banco Mundial (https://data.worldbank.org)
+**Data / statistics**:
+- World Bank (https://data.worldbank.org)
 - OECD Data (https://data.oecd.org)
 - Our World in Data (https://ourworldindata.org)
 - Pew Research (https://www.pewresearch.org)
-- Eurostat, INE, y equivalentes nacionales
+- Eurostat, national statistics institutes, and equivalents
 
-**Arte / cultura / humanidades**:
+**Art / culture / humanities**:
 - Europeana (https://www.europeana.eu)
 - Google Arts & Culture (https://artsandculture.google.com)
 - Internet Archive (https://archive.org)
 - Project Gutenberg (https://www.gutenberg.org)
 
-**Generales**:
-- Wikipedia — como PUNTO DE PARTIDA. Saltar siempre a la sección de **referencias** para llegar a Tier 1/2
-- Wikidata — datos estructurados
+**General**:
+- Wikipedia — as a STARTING POINT only. Always jump to the **references** section to reach Tier 1/2
+- Wikidata — structured data
 
-**Fuentes locales** (si el usuario proporcionó rutas):
-- Listar estructura de carpeta
-- Priorizar `.md`, `.pdf`, `.txt`, `.doc/.docx`, `.html`, `.epub`
-- Usar herramientas de lectura del agente (Read, Grep, Glob)
+**Local sources** (if the user supplied paths):
+- List the folder structure
+- Prioritise `.md`, `.pdf`, `.txt`, `.doc/.docx`, `.html`, `.epub`
+- Use the agent's reading tools (Read, Grep, Glob)
 
 ---
 
-### Fase 5 — Ciclo de investigación (LOOP auto-regulado)
+### Phase 5 — Research cycle (self-regulating LOOP)
 
-Cada ciclo ejecuta los siguientes sub-pasos.
+Each cycle runs the following sub-steps.
 
-#### 5.1. Elegir el hilo con menor cobertura
+#### 5.1. Pick the thread with the lowest coverage
 
-Calcular cobertura actual de cada hilo (`hallazgos_registrados / hallazgos_esperados_proxy`). Elegir el de menor %.
+Compute current coverage per thread (`findings_recorded / expected_findings_proxy`). Pick the lowest percentage.
 
-#### 5.2. WDM + Munger sobre fuentes a usar en ESTE ciclo
+#### 5.2. WDM + Munger on the sources to use in THIS cycle
 
-**WDM por fuente candidata**:
+**WDM per candidate source**:
 
-| Criterio | Peso | Escala |
+| Criterion | Weight | Scale |
 |----------|------|--------|
-| Autoridad (Tier) | 5 | Tier 1 = 5 · Tier 2 = 3 · Tier 3 = 2 · Rechazo = 0 |
-| Relevancia al hilo actual | 5 | 1-5 por match semántico |
-| Accesibilidad | 3 | 5 = full text abierto · 3 = abstract + paywall · 1 = bloqueado |
-| Recencia apropiada al campo | 2 | Código: reciente > viejo · Filosofía clásica: viejo = relevante |
-| Ausencia de conflicto de interés | 3 | 5 = independiente · 1 = financiada por parte interesada |
+| Authority (Tier) | 5 | Tier 1 = 5 · Tier 2 = 3 · Tier 3 = 2 · Rejected = 0 |
+| Relevance to the current thread | 5 | 1-5 by semantic match |
+| Accessibility | 3 | 5 = open full text · 3 = abstract + paywall · 1 = blocked |
+| Recency appropriate to the field | 2 | Code: recent > old · Classical philosophy: old = relevant |
+| Absence of conflict of interest | 3 | 5 = independent · 1 = funded by an interested party |
 
-Seleccionar top 3-5.
+Select the top 3-5.
 
-**Inversión Munger sobre las fuentes seleccionadas**:
-- ¿Qué fuente NO estoy usando que debería? (disidentes, escuelas críticas, voces silenciadas)
-- ¿Qué sesgo comparten todas las seleccionadas? (solo anglosajonas, solo de una época, solo de una escuela)
-- ¿Qué opinión contraria existe documentada? → Añadir al menos 1 fuente contradictoria si existe
+**Munger inversion on the selected sources**:
+- Which source am I NOT using that I should be? (dissenters, critical schools, silenced voices)
+- Which bias do all the selected sources share? (only Anglophone, only one era, only one school)
+- Which documented contrary opinion exists? -> Add at least 1 contradictory source if one exists
 
-#### 5.3. Ejecutar búsquedas / lecturas
+#### 5.3. Run the searches / readings
 
-- Usar MCPs en orden de preferencia detectado en Fase 3
-- Extraer: hechos concretos, datos numéricos, citas textuales con atribución, nombres de personas/obras/conceptos nuevos
-- Registrar en notas de trabajo del ciclo
+- Use MCPs in the preference order detected in Phase 3
+- Extract: concrete facts, numerical data, verbatim quotes with attribution, names of new people/works/concepts
+- Record in the cycle's working notes
 
-#### 5.4. Aplicar tiering a cada fuente consultada
+#### 5.4. Apply tiering to every source consulted
 
-**Tier 1 — Máxima confianza**:
-- Papers peer-reviewed en revistas indexadas (Scopus, Web of Science, PubMed, ACM, IEEE)
-- Libros de editoriales académicas (MIT Press, Oxford UP, Cambridge UP, Springer)
-- Documentación oficial de estándares (W3C, IETF/RFC, ISO, IEEE, WHO, FDA, BIS)
-- Archivos primarios verificables (museos nacionales, bibliotecas universitarias, archivos estatales)
-- Datos crudos de instituciones estadísticas oficiales
+**Tier 1 — Maximum confidence**:
+- Peer-reviewed papers in indexed journals (Scopus, Web of Science, PubMed, ACM, IEEE)
+- Books from academic presses (MIT Press, Oxford UP, Cambridge UP, Springer)
+- Official standards documentation (W3C, IETF/RFC, ISO, IEEE, WHO, FDA, BIS)
+- Verifiable primary archives (national museums, university libraries, state archives)
+- Raw data from official statistical institutions
 
-**Tier 2 — Alta confianza**:
-- Repositorios oficiales de proyectos activos y reconocidos
-- Blogs/publicaciones de autores citables (investigadores, profesionales con trayectoria verificable)
-- Charlas en conferencias reconocidas (con video y paper)
-- Wikipedia *CON* referencias a Tier 1/2 (tratar como agregador de referencias)
-- Reportes de think tanks / consultoras con metodología publicada (Pew, Gartner, McKinsey Institute)
+**Tier 2 — High confidence**:
+- Official repositories of active, recognised projects
+- Blogs and publications by citable authors (researchers, practitioners with a verifiable track record)
+- Talks at recognised conferences (with video and paper)
+- Wikipedia *WITH* references to Tier 1/2 (treat it as a reference aggregator)
+- Think tank / consultancy reports with published methodology (Pew, Gartner, McKinsey Institute)
 
-**Tier 3 — Útil con cautela**:
-- Blogs con citaciones internas a Tier 1/2
-- Stack Overflow / foros con voto alto + citaciones
-- Entrevistas grabadas con expertos identificables
-- Publicaciones de industria con autoría clara
+**Tier 3 — Useful with caution**:
+- Blogs with internal citations to Tier 1/2
+- Stack Overflow / forums with high vote counts plus citations
+- Recorded interviews with identifiable experts
+- Industry publications with clear authorship
 
-**Rechazo automático**:
-- Sin autor identificable
-- Marketing sin datos empíricos
-- Agregadores spam / SEO
-- Tutoriales sin citar fuentes
-- Social media sin contexto verificable
-- Contenido generado por IA sin supervisión humana documentada
+**Automatic rejection**:
+- No identifiable author
+- Marketing without empirical data
+- Spam / SEO aggregators
+- Tutorials that cite no sources
+- Social media without verifiable context
+- AI-generated content with no documented human oversight
 
-Cada fuente consultada se registra en el archivo tier correspondiente con: título, URL, autor, fecha, tier asignado, justificación.
+Every source consulted is recorded in its corresponding tier file with: title, URL, author, date, tier assigned, justification.
 
-#### 5.5. Consolidar en checkpoint
+#### 5.5. Consolidate into a checkpoint
 
-Guardar al final del ciclo: `memoria/investigaciones/<slug>/ciclo-N.md` con:
-- Hilo trabajado
-- Fuentes consultadas (con tier)
-- Hallazgos nuevos
-- Conexiones con hilos previos
-- Preguntas abiertas para próximos ciclos
+At the end of the cycle, write `memory/research/<slug>/cycle-N.md` containing:
+- Thread worked on
+- Sources consulted (with tier)
+- New findings
+- Connections to previous threads
+- Open questions for upcoming cycles
 
-#### 5.6. Actualizar `estado.md`
+#### 5.6. Update `state.md`
 
-- Incrementar contador de ciclos
-- Recalcular cobertura por hilo
-- Registrar métrica de saturación: `saturacion = hallazgos_nuevos_ciclo / hallazgos_totales_acumulados`
-- Actualizar estimación de tool calls y tokens de output consumidos
+- Increment the cycle counter
+- Recompute coverage per thread
+- Record the saturation metric: `saturation = new_findings_this_cycle / total_accumulated_findings`
+- Update the estimate of tool calls and output tokens consumed
 
-#### 5.7. Evaluar criterios de cierre — Función de fitness "nivel PhD"
+#### 5.7. Evaluate stopping criteria — the "PhD level" fitness function
 
-Los 5 criterios DEBEN cumplirse todos:
+All 5 criteria MUST be met:
 
-1. **Cobertura ≥80%** en todos los hilos semilla
-2. **≥3 fuentes Tier-1 por hilo** (o Tier 1+2 combinadas si el campo tiene pocas Tier 1)
-3. **Saturación ≤5%** durante 3 ciclos consecutivos
-4. **Inversión Munger aplicada al estado del conocimiento**: documentado qué NO sé, qué contradicen las fuentes, qué sesgos detecté
-5. **Síntesis cruzada entre hilos**: ≥3 conexiones explícitas entre hilos diferentes registradas
+1. **Coverage >=80%** across all seed threads
+2. **>=3 Tier-1 sources per thread** (or Tier 1+2 combined if the field has few Tier 1 sources)
+3. **Saturation <=5%** for 3 consecutive cycles
+4. **Munger inversion applied to the state of knowledge**: documented what I do NOT know, where sources contradict each other, which biases I detected
+5. **Cross-thread synthesis**: >=3 explicit connections between different threads recorded
 
-**Decisión**:
-- Todos cumplidos → Fase 6 (cierre natural)
-- Tope de ciclos alcanzado → Fase 6 (cierre forzado con aviso)
-- Caso contrario → continuar al paso 5.8
+**Decision**:
+- All met -> Phase 6 (natural close)
+- Cycle cap reached -> Phase 6 (forced close, with notice)
+- Otherwise -> continue to step 5.8
 
-#### 5.8. Pausa preventiva (check de contexto)
+#### 5.8. Preventive pause (context check)
 
-Umbrales:
-- `tool_calls_en_sesion ≥ 150`
-- **O** `tokens_output_aprox ≥ 80000`
+Thresholds:
+- `tool_calls_this_session >= 150`
+- **OR** `approx_output_tokens >= 80000`
 
-Si se cruza cualquiera:
+If either is crossed:
 
-1. Escribir checkpoint completo (5.5 + 5.6)
-2. Emitir mensaje:
+1. Write a full checkpoint (5.5 + 5.6)
+2. Emit the message:
 
 ```
-[PAUSA PREVENTIVA RECOMENDADA]
+[PREVENTIVE PAUSE RECOMMENDED]
 
-Estado actual:
-- Ciclos completados: N
-- Tool calls en sesión: X (cerca del límite)
-- Tokens de output aprox: Y
+Current state:
+- Cycles completed: N
+- Tool calls this session: X (near the limit)
+- Approximate output tokens: Y
 
-Razón: me aproximo al límite de contexto. Si continúo, podría perder coherencia
-al compactarse la sesión.
+Reason: I am approaching the context limit. If I continue, I could lose
+coherence when the session is compacted.
 
-La investigación está guardada en:
-  memoria/investigaciones/<slug>/
+The research is saved in:
+  memory/research/<slug>/
 
-Para reanudar en nueva sesión:
+To resume in a new session:
   /recursive-research --resume <slug>
 
-¿Pausar aquí, o continuar 1-2 ciclos más? (continuar / pausar)
+Pause here, or continue for 1-2 more cycles? (continue / pause)
 ```
 
-3. Esperar respuesta. Si `continuar`, seguir. Si `pausar`, saltar a Fase 6 (cierre parcial documentado).
+3. Wait for a reply. On `continue`, carry on. On `pause`, jump to Phase 6 (documented partial close).
 
-Si no se cruza el umbral → volver a 5.1 para próximo ciclo.
+If the threshold is not crossed -> return to 5.1 for the next cycle.
 
 ---
 
-### Fase 6 — Cierre
+### Phase 6 — Close
 
-Sea cierre natural (5 criterios cumplidos), forzado (tope de ciclos), o parcial (pausa manual):
+Whether the close is natural (5 criteria met), forced (cycle cap), or partial (manual pause):
 
-1. **`sintesis.md`** — síntesis ejecutiva:
-   - Resumen en lenguaje simple (3-5 párrafos)
-   - Hallazgos por hilo con referencias cruzadas
-   - Controversias y contradicciones detectadas
-   - Gaps de conocimiento (qué NO se investigó / qué sigue abierto)
-   - Mapa de hilos seguidos (árbol)
+1. **`synthesis.md`** — executive synthesis:
+   - Plain-language summary (3-5 paragraphs)
+   - Findings per thread with cross-references
+   - Controversies and contradictions detected
+   - Knowledge gaps (what was NOT researched / what remains open)
+   - Map of the threads followed (tree)
 
-2. **`acciones.md`** — checklist de acciones aplicables, priorizadas por impacto
+2. **`actions.md`** — checklist of applicable actions, prioritised by impact
 
-3. **Inversión Munger FINAL al estado del conocimiento** (registrar en `gaps.md`):
-   - ¿Qué sigo sin saber?
-   - ¿Qué fuentes contradijeron entre sí y no resolví?
-   - ¿Qué sesgo tiene mi conjunto de fuentes?
-   - ¿Qué pregunta debería hacerme un revisor crítico que no sepa responder?
+3. **FINAL Munger inversion on the state of knowledge** (record in `gaps.md`):
+   - What do I still not know?
+   - Which sources contradicted each other without my resolving it?
+   - What bias does my set of sources carry?
+   - What question would a critical reviewer ask that I could not answer?
 
-4. **Preguntar al usuario**:
+4. **Ask the user**:
 
 ```
-[INVESTIGACIÓN COMPLETADA — estado: natural / forzado / pausado]
+[RESEARCH COMPLETE — status: natural / forced / paused]
 
-Semilla: <tema>
-Ciclos ejecutados: N / <tope>
-Fuentes consultadas: X total (T1: A · T2: B · T3: C · Rechazadas: D)
-Estado PhD: alcanzado / NO alcanzado (razones: ...)
+Seed: <topic>
+Cycles run: N / <cap>
+Sources consulted: X total (T1: A · T2: B · T3: C · Rejected: D)
+PhD status: reached / NOT reached (reasons: ...)
 
-Gaps identificados:
+Gaps identified:
   1. ...
   2. ...
   3. ...
 
-Opciones:
-  1. Cerrar aquí
-  2. Profundizar un gap específico (indica cuál)
-  3. Añadir nuevo hilo y continuar
-  4. Cambiar de modo (web → mixto, etc.)
+Options:
+  1. Close here
+  2. Go deeper on a specific gap (say which)
+  3. Add a new thread and continue
+  4. Change mode (web -> mixed, etc.)
 
-¿Qué prefieres?
+What would you prefer?
 ```
 
-**La investigación puede ser infinita** — solo se cierra por decisión del usuario.
+**The research can be infinite** — it only closes when the user decides.
 
 ---
 
-## Modo `--resume`
+## `--resume` mode
 
-Invocación: `/recursive-research --resume <slug>`
+Invocation: `/recursive-research --resume <slug>`
 
-1. Buscar `memoria/investigaciones/<slug>/`
-2. Si no existe → error claro, sugerir `/recursive-research` normal
-3. Si existe:
-   - Leer `estado.md` → reconstruir métricas
-   - Leer último `ciclo-N.md` → contexto reciente
-   - Leer `hilos.md` → árbol actual
-   - Presentar: "Retomo desde ciclo N. Próximo paso: [hilo X]. ¿Continúo?"
-4. Continuar el loop desde Fase 5
-
----
-
-## Modo `--list`
-
-Invocación: `/recursive-research --list`
-
-Listar todas las investigaciones guardadas en `memoria/investigaciones/` del proyecto actual:
-- Slug · Semilla · Ciclos completados · Estado (abierta / cerrada) · Última modificación
+1. Look for `memory/research/<slug>/`
+2. If it does not exist -> clear error, suggest plain `/recursive-research`
+3. If it does exist:
+   - Read `state.md` -> rebuild the metrics
+   - Read the latest `cycle-N.md` -> recent context
+   - Read `threads.md` -> current tree
+   - Present: "Resuming from cycle N. Next step: [thread X]. Continue?"
+4. Continue the loop from Phase 5
 
 ---
 
-## Anti-patterns a rechazar activamente
+## `--list` mode
 
-1. **Búsqueda plana** — repetir queries con sinónimos sin profundizar en resultados reales
-2. **Ignorar Munger** — seleccionar fuentes solo por confort; la inversión es obligatoria
-3. **Checkpoint ausente** — avanzar 5 ciclos sin dumpear a disco
-4. **Tier 3 sin referencias** — aceptar un blog sin que cite Tier 1/2 explícitamente
-5. **Autoconfirmación del PhD** — declarar PhD sin los 5 criterios medidos; si uno falta, NO cerrar
-6. **Ignorar gaps** — cerrar sin documentar qué no se sabe; los gaps son parte del entregable
-7. **Condescendencia intelectual** — ocultar controversias o contradicciones "para no ensuciar la síntesis"; la honestidad intelectual ES el resultado
-8. **Confiar ciegamente en el knowledge interno** — el conocimiento del agente puede estar desactualizado; siempre verificar contra fuente
+Invocation: `/recursive-research --list`
+
+List every saved research project under `memory/research/` in the current project:
+- Slug · Seed · Cycles completed · Status (open / closed) · Last modified
 
 ---
 
-## Estructura final de archivos generados
+## Anti-patterns to actively reject
+
+1. **Flat search** — repeating queries with synonyms without going deeper into the actual results
+2. **Ignoring Munger** — selecting sources purely for comfort; the inversion is mandatory
+3. **Missing checkpoint** — advancing 5 cycles without dumping to disk
+4. **Tier 3 without references** — accepting a blog that does not explicitly cite Tier 1/2
+5. **Self-certifying the PhD** — declaring PhD level without measuring the 5 criteria; if one is missing, do NOT close
+6. **Ignoring gaps** — closing without documenting what is not known; the gaps are part of the deliverable
+7. **Intellectual condescension** — hiding controversies or contradictions "to keep the synthesis clean"; intellectual honesty IS the result
+8. **Blindly trusting internal knowledge** — the agent's knowledge may be out of date; always verify against a source
+
+---
+
+## Final structure of generated files
 
 ```
-memoria/investigaciones/<slug>/
-├── estado.md              ← progreso, métricas, metadata
-├── hilos.md               ← árbol de hilos y sub-hilos con estado
-├── fuentes-tier-1.md      ← fuentes más confiables consultadas
-├── fuentes-tier-2.md      ← fuentes de alta confianza
-├── fuentes-tier-3.md      ← fuentes con cautela
-├── fuentes-rechazadas.md  ← fuentes evaluadas y descartadas (con razón)
-├── hallazgos.md           ← consolidación de descubrimientos
-├── ciclo-01.md            ← checkpoint del ciclo 1
-├── ciclo-02.md
-├── ciclo-N.md
-├── sintesis.md            ← síntesis ejecutiva (Fase 6)
-├── acciones.md            ← checklist de acciones aplicables
-└── gaps.md                ← lo que NO se sabe, controversias, sesgos
-```
-
----
-
-## Ejemplo de invocación
-
-```
-Usuario: /recursive-research
-
-Skill: ¿Cuál es el tema que quieres investigar?
-Usuario: Mecanismos de la memoria episódica en humanos
-
-Skill: ¿Modo? (web / local / mixto)
-Usuario: mixto
-
-Skill: ¿Rutas locales?
-Usuario: C:/Dropbox/papers-neurociencia
-
-Skill: ¿Fuentes / autores priorizados? (opcional)
-Usuario: Endel Tulving, Eleanor Maguire
-
-Skill: ¿Fuentes excluidas? (opcional)
-Usuario: -
-
-Skill: ¿Tope de ciclos? (default 20)
-Usuario: 25
-
-Skill: Confirmado.
-       Semilla: "memoria episódica en humanos"
-       Modo: mixto · Local: [C:/Dropbox/papers-neurociencia]
-       Priorizar: [Tulving, Maguire] · Tope: 25 ciclos
-
-       Aplicando WDM + Munger para identificar hilos semilla...
-       [muestra tabla]
-
-       Hilos seleccionados:
-       1. Bases neuroanatómicas (hipocampo, PFC)
-       2. Fenomenología y taxonomía (Tulving et al.)
-       3. Trastornos y disociaciones (amnesia, Alzheimer)
-       4. Modelos computacionales
-       5. Neurociencia cognitiva contemporánea
-
-       La carpeta `memoria/` no existe. La creo — es necesaria para
-       consolidar cada ciclo en disco.
-
-       Ruta: memoria/investigaciones/memoria-episodica-humanos/
-
-       Arrancando ciclo 1 (hilo con menor cobertura: 1)...
+memory/research/<slug>/
+├── state.md              ← progress, metrics, metadata
+├── threads.md            ← tree of threads and sub-threads with status
+├── sources-tier-1.md     ← most trustworthy sources consulted
+├── sources-tier-2.md     ← high-confidence sources
+├── sources-tier-3.md     ← sources to treat with caution
+├── sources-rejected.md   ← sources evaluated and discarded (with reason)
+├── findings.md           ← consolidation of discoveries
+├── cycle-01.md           ← checkpoint for cycle 1
+├── cycle-02.md
+├── cycle-N.md
+├── synthesis.md          ← executive synthesis (Phase 6)
+├── actions.md            ← checklist of applicable actions
+└── gaps.md               ← what is NOT known, controversies, biases
 ```
 
 ---
 
-## Autoría y licencia
+## Example invocation
 
-- **Autor:** Joseph Huayhualla ([@Anjos2](https://github.com/Anjos2))
-- **Licencia:** MIT — ver archivo `LICENSE` del repositorio
-- **Repositorio:** https://github.com/Anjos2/recursive-research
+```
+User: /recursive-research
 
-Contribuciones bienvenidas. Si detectas un anti-pattern no cubierto, una heurística mejor, o un criterio de PhD más robusto, abre un PR.
+Skill: What is the topic you want to research?
+User: Mechanisms of episodic memory in humans
+
+Skill: Mode? (web / local / mixed)
+User: mixed
+
+Skill: Local paths?
+User: C:/Dropbox/neuroscience-papers
+
+Skill: Prioritised sources / authors? (optional)
+User: Endel Tulving, Eleanor Maguire
+
+Skill: Excluded sources? (optional)
+User: -
+
+Skill: Cycle cap? (default 20)
+User: 25
+
+Skill: Confirmed.
+       Seed: "episodic memory in humans"
+       Mode: mixed · Local: [C:/Dropbox/neuroscience-papers]
+       Prioritise: [Tulving, Maguire] · Cap: 25 cycles
+
+       Applying WDM + Munger to identify seed threads...
+       [shows table]
+
+       Selected threads:
+       1. Neuroanatomical basis (hippocampus, PFC)
+       2. Phenomenology and taxonomy (Tulving et al.)
+       3. Disorders and dissociations (amnesia, Alzheimer's)
+       4. Computational models
+       5. Contemporary cognitive neuroscience
+
+       The `memory/` folder does not exist. I am creating it — it is
+       required to consolidate each cycle to disk.
+
+       Path: memory/research/episodic-memory-humans/
+
+       Starting cycle 1 (lowest-coverage thread: 1)...
+```
+
+---
+
+## Authorship and licence
+
+- **Author:** Joseph Huayhualla ([@Anjos2](https://github.com/Anjos2))
+- **Licence:** MIT — see the `LICENSE` file in this directory
+- **Repository:** https://github.com/Anjos2/recursive-research
+
+Contributions welcome upstream. If you spot an anti-pattern that is not covered, a better
+heuristic, or a more robust PhD criterion, open a PR on the repository above.
+
+### Note on this copy
+
+This is an English translation of upstream v2.2.0, which is written in Spanish. The structure,
+thresholds, weights, tiering rules and stopping criteria are unchanged. The names of the files
+the skill *generates* were translated too (`memoria/investigaciones/` -> `memory/research/`,
+`estado.md` -> `state.md`, `hilos.md` -> `threads.md`, `hallazgos.md` -> `findings.md`,
+`sintesis.md` -> `synthesis.md`, `acciones.md` -> `actions.md`, `ciclo-N.md` -> `cycle-N.md`),
+so research folders created by this copy are not interchangeable with ones created by upstream.
+MIT permits this derivative; the copyright notice above and in `LICENSE` is retained.
